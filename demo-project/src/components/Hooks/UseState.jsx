@@ -12,11 +12,14 @@ const UseState = () => {
         setObj({ name: "John", age: 30 });
     }
 
-    const [arr_obj, setArr_obj] = useState([
-        { name: "John", age: 30},
-        { name: "Jane", age: 25},
-    ]);
-    function handleSetPerson(){}
+    const [arr_obj, setArr_obj] = useState([]);
+    function handleSetPerson(){
+        setArr_obj([
+            {name: "new Person", age: 20},
+            {name: "new Person1", age: 20},
+            {name: "new Person2", age: 20},
+        ])
+    }
 
     return (
         <>
@@ -25,11 +28,16 @@ const UseState = () => {
                 <button onClick={handleSetPerson}>Add New person</button>
                 <ul>
                     {
-                        arr_obj.map((item, index) => (
-                            <li key={index}>
-                                Person: {item.name}, Age: {item.age}
-                            </li>
-                        ))
+                        arr_obj.length > 0 ? (
+                            arr_obj.map((person, index) => (
+                                <li key={index}>
+                                    <p>Name: {person.name}</p>
+                                    <p>Age: {person.age}</p>
+                                </li>
+                            ))
+                        ):(
+                            <li>empty data</li>
+                        )
                     }
                 </ul> 
             </div>
