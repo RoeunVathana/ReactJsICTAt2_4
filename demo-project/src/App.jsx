@@ -1,10 +1,10 @@
-import UseState  from "./components/Hooks/UseState"
-
-import Recall from  "./components/Hooks/Recall"
+// import FirstEven from "./components/EvenLesson/FirstEven"
+import Second from "./components/EvenLesson/Second"
 function App() {
   return (
     <>
-      <Recall/>
+      {/* <FirstEven /> */}
+      <Second />
     </>
   )
 }
