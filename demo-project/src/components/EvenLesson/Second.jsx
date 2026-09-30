@@ -7,32 +7,48 @@ const Second = () => {
     const [textButton, setTextButton] = useState("Submit")
     const [idEdit, setIdEdit] = useState(null);
     const [message, setMessage] = useState("")
-
-
-    const handleSubmit = (e) => {
+    const [loading, setLoading] = useState("");
+    const [StoreData, setStoreData] = useState(JSON.parse(localStorage.getItem("newData")));
+    const [index, setIndex] = useState(1);
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // setData([...data, { email, password }]);
+        let setDataLocalStorage = JSON.stringify([...data, {id: index , email, password }])
 
-
-        setData([...data, { email, password }]);
-
+        localStorage.setItem("newData", setDataLocalStorage);
+        setLoading(data);
         setEmail("");
         setPassword("");
+        setIndex(index + 1);
     }
 
     useEffect(() => {
-        // console.log(data);
-    }, [data])
+      
+        const fetchData = async () => {
+            const getDataFormLocalStorage = JSON.parse(localStorage.getItem("newData")) || [];
+            await setData(getDataFormLocalStorage); 
+        };
+
+        fetchData(); 
+    }, [loading, StoreData]);
 
 
-    const handleDelete = (index) => {
-        if (index == -1) {
-            return setMessage("index not found");
-        }
-        // let newData = data.filter((item, index) => index != index);
-        let newData = [...data];
-        newData.splice(index, 1);
 
-        setData(newData);
+    const handleDelete = (id) => {
+        // if (index == -1) {
+        //     return setMessage("index not found");
+        // }
+        // // let newData = data.filter((item, index) => index != index);
+        // let newData = [...data];
+        // newData.splice(index, 1);
+
+        // setData(newData);
+        let newData = StoreData.filter((item, index) => item.id != id)
+
+        let refresh = localStorage.setItem("newData", JSON.stringify(newData));
+        setLoading(refresh);
     }
 
     const handleEdit = (id) => {
@@ -62,7 +78,7 @@ const Second = () => {
     return (
         <>
             <div className="container mt-5 bg-secondary p-5" style={{ borderRadius: "10px", width: "600px" }}>
-                <form> 
+                <form>
                     <div className="mb-3">
                         <label className="form-label">Email</label>
                         <input type="email" className="form-control" value={email}
@@ -95,14 +111,14 @@ const Second = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index) => (
+                    {data?.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.email}</td>
-                            <td>{item.password}</td>                                                
+                            <td>{item?.email}</td>
+                            <td>{item?.password}</td>
                             <td>
                                 <div className="d-flex gap-2">
-                                    <button className="btn btn-primary" onClick={() => handleEdit(index)}>Edit</button>
-                                    <button className="btn btn-danger" onClick={() => handleDelete(index)}>Delete</button>
+                                    <button className="btn btn-primary" onClick={() => handleEdit(item?.id)}>Edit</button>
+                                    <button className="btn btn-danger" onClick={() => handleDelete(item?.id)}>Delete</button>
                                 </div>
                             </td>
                         </tr>
