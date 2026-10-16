@@ -4,6 +4,7 @@ import Second from "./pages/Second";
 import LayOut from "./pages/LayOut";
 import Content from "./pages/Content";
 import AboutPage from "./pages/AboutPage";
+import Detail from "./pages/Detail";
 const App = () => {
     return (
         <BrowserRouter>
@@ -13,6 +14,8 @@ const App = () => {
                     <Route path="/product" element={<Second />} />
                     <Route path="/content" element={<Content />} />
                     <Route path="/about" element={<AboutPage />} />
+                    <Route path="/detail/:id" element={<Detail />} />
+                    <Route path="/detail/about/:name" element={<AboutPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

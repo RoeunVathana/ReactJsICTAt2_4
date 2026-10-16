@@ -1,22 +1,18 @@
 
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./style/Navbar.css";
-import { useState } from "react";
+
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const links = [
-        { name: "Home", path: "/" },
-        { name: "Product", path: "/product" },
-        { name: "Contact", path: "/content" },
-        { name: "About", path: "/about" },
-    ];
-
     return (
         <nav className="navbar">
-            <a href="" className="navbar-logo">
-               <NavLink to="/"> Computer<span>Shop</span></NavLink>
-            </a>
+            <div className="navbar-logo">
+                <NavLink to="/">
+                    Computer<span>Shop</span>
+                </NavLink>
+            </div>
 
             <button
                 className="menu-toggle"
@@ -29,21 +25,15 @@ const Navbar = () => {
 
             <div className={`navbar-menu ${menuOpen ? "active" : ""}`}>
                 <ul className="navbar-links">
-                    {links.map((link) => (
-                        <li key={link.name}>
-                            <a
-                                // href={link.path}
-                                // onClick={() => setMenuOpen(false)}
-                            >
-                                <NavLink to={link.path}>{link.name}</NavLink>
-                            </a>
-                        </li>
-                    ))}
+                    <li><NavLink to="/">Home</NavLink></li>
+                    <li><NavLink to="/product">Product</NavLink></li>
+                    <li><NavLink to="/content">Contact</NavLink></li>
+                    <li><NavLink to="/about">About</NavLink></li>
                 </ul>
 
-                <a href="/login" className="login-btn">
+                <NavLink to="/login" className="login-btn">
                     Login
-                </a>
+                </NavLink>
             </div>
         </nav>
     );
