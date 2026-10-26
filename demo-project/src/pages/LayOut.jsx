@@ -4,8 +4,11 @@ import Footer from "./Footer"
 const LayOut = () => {
     return (
         <>
+            {/* Navbar  */}
             <Navbar />
+            {/* contain */}
             <Outlet />
+            {/* footer  */}
             <Footer />
         </>
     )

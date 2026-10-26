@@ -5,6 +5,8 @@ import LayOut from "./pages/LayOut";
 import Content from "./pages/Content";
 import AboutPage from "./pages/AboutPage";
 import Detail from "./pages/Detail";
+import HookOne from "./Hooks/HookOne";
+import AppPage from "./Hooks/AppPage";
 const App = () => {
     return (
         <BrowserRouter>
@@ -16,6 +18,10 @@ const App = () => {
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/detail/:id" element={<Detail />} />
                     <Route path="/detail/about/:name" element={<AboutPage />} />
+
+                    {/* hooks */}
+                    <Route path="/hook_one" element={<HookOne />} />
+                    <Route path="/app_page" element={<AppPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
