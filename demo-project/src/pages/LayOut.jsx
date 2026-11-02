@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
+
 const LayOut = () => {
     return (
         <>
@@ -9,7 +10,7 @@ const LayOut = () => {
             {/* contain */}
             <Outlet />
             {/* footer  */}
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }

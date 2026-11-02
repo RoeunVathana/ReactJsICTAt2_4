@@ -7,6 +7,8 @@ import AboutPage from "./pages/AboutPage";
 import Detail from "./pages/Detail";
 import HookOne from "./Hooks/HookOne";
 import AppPage from "./Hooks/AppPage";
+import FetchApi from "./fetchApi/FetchApi";
+import FetchDetail from "./fetchApi/FetchDetail";
 const App = () => {
     return (
         <BrowserRouter>
@@ -22,6 +24,10 @@ const App = () => {
                     {/* hooks */}
                     <Route path="/hook_one" element={<HookOne />} />
                     <Route path="/app_page" element={<AppPage />} />
+
+                    {/* Fetch API  */}
+                    <Route path="fetchApi" element={<FetchApi />} />
+                    <Route path="fetchApi/detail/:id" element={<FetchDetail />} />
                 </Route>
             </Routes>
         </BrowserRouter>
