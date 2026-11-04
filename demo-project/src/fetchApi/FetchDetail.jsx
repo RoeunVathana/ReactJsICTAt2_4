@@ -1,24 +1,18 @@
-
+import useCustomFetchApi from './CustomFetchApi';
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 const FetchDetail = () => {
   const { id } = useParams();
   const [detailData, setDetailData] = useState([]);
 
-  const fetchDetailData = (id) => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        setDetailData(data)
-        console.log(data)
-      });
-  }
+
+  const { ApiData } = useCustomFetchApi("https://fakestoreapi.com/products", {}, id, "GET");
 
   useEffect(() => {
-    fetchDetailData(id);
-  }, [id]);
-
-
+    if(ApiData && ApiData.id) {
+      setDetailData(ApiData);
+    }
+  }, [id, ApiData]);
   return (
     <>
       <div className='mt-5 text-center fs-1'>Fetch Api</div>

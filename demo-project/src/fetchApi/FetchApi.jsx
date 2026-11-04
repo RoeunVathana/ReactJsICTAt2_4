@@ -1,24 +1,11 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import useCustomFetchApi from './CustomFetchApi';
+import {useNavigate} from 'react-router-dom';
 const FetchApi = () => {
-
-    const [storeData, setData] = useState([]);
     const navigate = useNavigate();
-    const fetchData = () => {
-        fetch('https://fakestoreapi.com/products')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                setData(data)
-            });
-    }
+    const { ApiData } = useCustomFetchApi("https://fakestoreapi.com/products", {}, "", "GET");
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const handleDetail  = (id) =>{
-        navigate(`/fetchApi/detail/${id}`);
+    const handleDetail = (id) => { 
+        navigate(`fetchApi/detail/${id}`);
     }
 
     return (
@@ -26,7 +13,7 @@ const FetchApi = () => {
             <div className='mt-5 text-center fs-1'>Fetch Api</div>
             <div className='d-flex flex-wrap justify-content-center'>
                 {
-                storeData.map(item => {
+                ApiData.map(item => {
                     return (
                         <div key={item.id} className='card m-3' style={{ width: '18rem' }}>
                             <img src={item.image} className="card-img-top" alt={item.title} />
@@ -48,7 +35,7 @@ const FetchApi = () => {
             }
             </div>
         </>
-    )
-}
+    );
+};
 
-export default FetchApi
+export default FetchApi;
