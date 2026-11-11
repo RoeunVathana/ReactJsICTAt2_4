@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 const FetchApi = () => {
     const navigate = useNavigate();
     const { ApiData } = useCustomFetchApi("https://fakestoreapi.com/products", {}, "", "GET");
-
+    console.log(ApiData)
     const handleDetail = (id) => { 
         navigate(`fetchApi/detail/${id}`);
     }

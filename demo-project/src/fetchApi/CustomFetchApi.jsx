@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 const useCustomFetchApi = (url = "", dataRe = {}, id = "", method = "GET") => {
     const [ApiData, setApiData] = useState([]);
+    const [message, setMessage] = useState("")
     useEffect(() => {
         let isMounted = true;
         const fetchData = async () => {
@@ -23,6 +24,14 @@ const useCustomFetchApi = (url = "", dataRe = {}, id = "", method = "GET") => {
                     const data = await response.json();
                     if (isMounted) setApiData(data);
                 }
+                if(method === "DELETE"){
+                    const response = await fetch(url, {
+                        method: "DELETE",
+                    })
+                    if (isMounted) {
+                        setMessage("Delete Product Success" + response.message)
+                    };
+                }
             } catch (error) {
                 alert("Error fetching data: " + error.message);
             }
@@ -32,6 +41,7 @@ const useCustomFetchApi = (url = "", dataRe = {}, id = "", method = "GET") => {
             isMounted = false;
         };
     }, [url, id, method]);
-    return { ApiData };
+    
+    return { ApiData, message };
 };
 export default useCustomFetchApi;

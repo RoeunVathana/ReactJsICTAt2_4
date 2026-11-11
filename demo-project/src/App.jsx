@@ -9,6 +9,7 @@ import HookOne from "./Hooks/HookOne";
 import AppPage from "./Hooks/AppPage";
 import FetchApi from "./fetchApi/FetchApi";
 import FetchDetail from "./fetchApi/FetchDetail";
+import FormCreate from "./pages/FormCreate";
 const App = () => {
     return (
         <BrowserRouter>
@@ -28,6 +29,10 @@ const App = () => {
                     {/* Fetch API  */}
                     <Route path="fetchApi" element={<FetchApi />} />
                     <Route path="fetchApi/detail/:id" element={<FetchDetail />} />
+
+                    {/* form  */}
+                    <Route path="form_create" element={<FormCreate />}></Route>
+
                 </Route>
             </Routes>
         </BrowserRouter>
