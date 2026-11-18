@@ -1,31 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import fetchAxios from '../fetchApi/AxiosCustom';
 import './style/FormCreate.css';
 
+
 const FormCreate = () => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+    // const [previewUrl, setPreviewUrl] = useState('');
 
-    // 1. Initialized as a plain object, not an array
     const [data, setData] = useState({
+        name: '',
         category: '',
-        title: '',
         price: '',
+        stock: '',
         description: '',
-        Image: null,
+        image: null,
     });
 
+    // // Generate and clean up image preview URL only when data.image changes
+    // useEffect(() => {
+    //     if (!data.image) {
+    //         setPreviewUrl('');
+    //         return;
+    //     }
+    //     // const objectUrl = URL.createObjectURL(data.image);
+    //     // setPreviewUrl(objectUrl);
+
+    //     // return () => URL.revokeObjectURL(objectUrl);
+    // }, [data.image]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
         setData((prev) => ({ ...prev, [id]: value }));
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setData((prev) => ({ ...prev, Image: file }));
-        }
-    };
+    // const handleFileChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         console.log(file)
+    //         setData((prev) => ({ ...prev, image: file }));
+    //     }
+    // };
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -33,36 +50,32 @@ const FormCreate = () => {
         setMessage('');
 
         try {
-            const image = data.Image
-                ? await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = () => reject(new Error('Unable to read the selected image.'));
-                    reader.readAsDataURL(data.Image);
-                })
-                : 'https://i.pravatar.cc';
+            // const imageUrl = data.image
+            //     ? await new Promise((resolve, reject) => {
+            //         const reader = new FileReader();
+            //         reader.onload = () => resolve(reader.result);
+            //         reader.onerror = () => reject(new Error('Unable to read the selected image.'));
+            //         reader.readAsDataURL(data.image);
+            //     })
+            //     : '';
+
             const productPayload = {
-                title: data.title,
-                price: Number(data.price),
-                description: data.description,
+                name: data.name,
                 category: data.category,
-                image,
+                price: Number(data.price),
+                stock: Number(data.stock),
+                description: data.description,
+                imageUrl: data.image,
             };
-            const response = await fetch('https://fakestoreapi.com/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(productPayload),
-            });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            // Using your custom Axios helper to match Home.jsx
+            const reStore = await fetchAxios('/products', 'POST', productPayload);
+            console.log(reStore)
 
-            const result = await response.json();
-            setMessage(`Product saved successfully${result.id ? ` (ID: ${result.id})` : ''}.`);
+            // navigate('/'); // Redirect back to Home table after saving
         } catch (error) {
             console.error('Error saving item:', error);
-            setMessage(error.message || 'Failed to save item. Please try again.');
+            setMessage(error?.response?.data?.message || error.message || 'Failed to save item.');
         } finally {
             setLoading(false);
         }
@@ -71,15 +84,15 @@ const FormCreate = () => {
     return (
         <div className="form-wrapper">
             <form className="form-card" onSubmit={handleSave}>
-                <h2 className="form-title">Create Item</h2>
+                <h2 className="form-title">Create Product</h2>
 
                 <div className="form-group">
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="name">Product Name</label>
                     <input
-                        id="title"
+                        id="name"
                         type="text"
-                        placeholder="Product title"
-                        value={data.title}
+                        placeholder="Product name"
+                        value={data.name}
                         required
                         onChange={handleChange}
                     />
@@ -105,7 +118,21 @@ const FormCreate = () => {
                             type="number"
                             placeholder="0.00"
                             step="0.01"
+                            min="0"
                             value={data.price}
+                            required
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="stock">Stock</label>
+                        <input
+                            id="stock"
+                            type="number"
+                            placeholder="0"
+                            min="0"
+                            value={data.stock}
                             required
                             onChange={handleChange}
                         />
@@ -127,32 +154,39 @@ const FormCreate = () => {
                     <label htmlFor="image">Image</label>
                     <input
                         id="image"
-                        type="file"
+                        type="text"
                         accept="image/*"
                         className="file-input"
-                        onChange={handleFileChange}
+                        placeholder='Image Url'
+                        onChange={handleChange}
                     />
                 </div>
 
-                {data.Image && (
+                {/* {previewUrl && (
                     <div className="form-group">
                         <img
-                            src={
-                                typeof data.Image === 'string'
-                                    ? data.Image
-                                    : URL.createObjectURL(data.Image)
-                            }
-                            alt={data.title || 'Preview'}
-                            className="mt-2 h-32 w-32 rounded-lg border border-gray-200 object-cover shadow-sm"
+                            src={previewUrl}
+                            alt={data.name || 'Preview'}
+                            className="img-thumbnail mt-2"
+                            style={{ width: '128px', height: '128px', objectFit: 'cover' }}
                         />
                     </div>
-                )}
+                )} */}
 
-                {message && <p role="status">{message}</p>}
+                {message && <p className="text-danger" role="status">{message}</p>}
 
-                <button type="submit" className="submit-btn" disabled={loading}>
-                    {loading ? 'Saving...' : 'Save'}
-                </button>
+                <div className="d-flex gap-2">
+                    <button type="submit" className="submit-btn" disabled={loading}>
+                        {loading ? 'Saving...' : 'Save'}
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => navigate('/')}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </form>
         </div>
     );

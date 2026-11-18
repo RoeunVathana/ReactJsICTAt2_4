@@ -10,6 +10,8 @@ import AppPage from "./Hooks/AppPage";
 import FetchApi from "./fetchApi/FetchApi";
 import FetchDetail from "./fetchApi/FetchDetail";
 import FormCreate from "./pages/FormCreate";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 const App = () => {
     return (
         <BrowserRouter>
@@ -32,6 +34,8 @@ const App = () => {
 
                     {/* form  */}
                     <Route path="form_create" element={<FormCreate />}></Route>
+                    <Route path="/login" element={<Login></Login>}/>
+                    <Route path="/register" element={<Register></Register>}></Route>
 
                 </Route>
             </Routes>
